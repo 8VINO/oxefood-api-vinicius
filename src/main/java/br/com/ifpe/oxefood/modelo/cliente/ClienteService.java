@@ -25,12 +25,46 @@ public class ClienteService {
    
     public List<Cliente> listarTodos() {
   
-        return repository.findAll();
+        return repository.findAll();//Indepente se tiver vazio ou n, a lista vai ser retornada
     }
 
     public Cliente obterPorID(Long id) {
 
-        return repository.findById(id).get();
+        return repository.findById(id).get(); 
+            // Por que ".get()"?
+    // O método está definido para retornar um objeto do tipo Cliente.
+    // Porém, o findById retorna um Optional<Cliente>, que pode estar vazio
+    // (quando não encontra o registro) ou conter um Cliente (quando encontra).
+    // Como a função deve retornar um Cliente e não um Optional,
+    // precisamos "tirar" o valor de dentro do Optional.
+    //
+    // O .get() faz isso, mas se o Optional estiver vazio, ele lança
+    // NoSuchElementException. Isso funciona, mas não é recomendado,
+    // porque a exceção não é muito descritiva.
+    //
+    // O mais recomendado é usar orElseThrow(), onde você pode lançar
+    // uma exceção personalizada e dar uma mensagem mais clara.
+
+   //MESMO CASO USANDO orElseThrow:
+    // return repository.findById(id)
+    //     .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+
+    // findById(id) → retorna um Optional<Cliente>.
+
+    // .orElseThrow(...) → abre o Optional:
+
+    // Se tiver um valor → retorna o Cliente de dentro.
+
+    // Se estiver vazio → lança a exceção que você definiu.
+
+    // Ou seja: o orElseThrow faz o mesmo papel do .get(), mas de forma mais segura e expressiva.
+
+    //resumo:
+    // .get() → tira o valor de dentro, mas estoura exceção feia (NoSuchElementException) se vazio.
+    // .orElse(...) → tira o valor ou retorna um default.
+    // .orElseThrow(...) → tira o valor ou lança uma exceção customizada.
     }
 
 }
+     
