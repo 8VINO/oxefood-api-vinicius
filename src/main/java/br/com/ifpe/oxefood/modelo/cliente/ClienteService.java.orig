@@ -18,17 +18,25 @@ public class ClienteService {
 
        cliente.setHabilitado(Boolean.TRUE);
        return repository.save(cliente);
-
+       
+       
        
    }
    
     public List<Cliente> listarTodos() {
   
+<<<<<<< HEAD
+        return repository.findAll();
+=======
         return repository.findAll();//Indepente se tiver vazio ou n, a lista vai ser retornada
+>>>>>>> 3eb4dc4b1f56ac03475c23be1027d382733dbe2a
     }
 
     public Cliente obterPorID(Long id) {
 
+<<<<<<< HEAD
+        return repository.findById(id).get();
+=======
         return repository.findById(id).get(); 
             // Por que ".get()"?
     // O método está definido para retornar um objeto do tipo Cliente.
@@ -63,6 +71,8 @@ public class ClienteService {
     // .get() → tira o valor de dentro, mas estoura exceção feia (NoSuchElementException) se vazio.
     // .orElse(...) → tira o valor ou retorna um default.
     // .orElseThrow(...) → tira o valor ou lança uma exceção customizada.
+>>>>>>> 3eb4dc4b1f56ac03475c23be1027d382733dbe2a
     }
 
 }
+     

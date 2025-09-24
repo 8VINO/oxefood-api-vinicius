@@ -1,5 +1,7 @@
 package br.com.ifpe.oxefood.modelo.entregador;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,14 @@ public class EntregadorService {
 
         // Usa o repository para salvar no banco de dados
         return repository.save(entregador); //--> ele salva (ou atualiza) o objeto no banco de dados. Retorna o mesmo objeto, mas possivelmente atualizado.
+    }
+
+    public List<Entregador> listarTodos(){
+        return repository.findAll();
+    }
+
+    public Entregador obterPorId(Long id){
+        return repository.findById(id).get();
     }
     
 }
