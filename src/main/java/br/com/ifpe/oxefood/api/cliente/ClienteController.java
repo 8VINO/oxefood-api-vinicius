@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifpe.oxefood.modelo.cliente.Cliente;
 import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
+
 
 @RestController//define q é uma api rest
 @RequestMapping("/api/cliente")//qual a url vai usar para acessar funções dessa classe, controller q vou acessar
@@ -41,4 +43,9 @@ public class ClienteController {
         return clienteService.obterPorID(id);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> update(@PathVariable("id") Long id, @RequestBody ClienteRequest request){
+        clienteService.update(id, request.build());
+        return ResponseEntity.ok().build();
+    }
 }
