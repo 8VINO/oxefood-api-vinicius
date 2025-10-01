@@ -64,7 +64,7 @@ public class ClienteService {
     // .orElse(...) → tira o valor ou retorna um default.
     // .orElseThrow(...) → tira o valor ou lança uma exceção customizada.
     }
-
+    @Transactional
     public void update(Long id, Cliente clienteAlterado){
         Cliente cliente = repository.findById(id).get();
         cliente.setNome(clienteAlterado.getNome());
@@ -72,6 +72,13 @@ public class ClienteService {
         cliente.setCpf(clienteAlterado.getCpf());
         cliente.setFoneCelular(clienteAlterado.getFoneCelular());
         cliente.setFoneFixo(clienteAlterado.getFoneFixo());
+
+        repository.save(cliente);
+    }
+    @Transactional
+    public void delete(Long id){
+        Cliente cliente = repository.findById(id).get();
+        cliente.setHabilitado(Boolean.FALSE);
 
         repository.save(cliente);
     }

@@ -27,4 +27,24 @@ public class ProdutoService {
     public Produto obterPorId(Long id){
         return repository.findById(id).get();
     }
+
+    @Transactional
+    public Produto update(Long id, Produto produtoAlterado){
+        Produto produto = repository.findById(id).get();
+        produto.setCodigo(produtoAlterado.getCodigo());
+        produto.setTitulo(produtoAlterado.getTitulo());
+        produto.setDescricao(produtoAlterado.getDescricao());
+        produto.setValorUnitario(produtoAlterado.getValorUnitario());
+        produto.setTempoEntregaMaximo(produtoAlterado.getTempoEntregaMaximo());
+        produto.setTempoEntregaMinimo(produtoAlterado.getTempoEntregaMinimo());
+
+        return repository.save(produto);
+
+    }
+
+    public void delete (Long id){
+        Produto produto = repository.findById(id).get();
+        produto.setHabilitado(Boolean.FALSE);
+        repository.save(produto);
+    }
 }
