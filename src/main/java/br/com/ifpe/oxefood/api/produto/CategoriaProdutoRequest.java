@@ -1,6 +1,6 @@
-package br.com.ifpe.oxefood.api.categoriaProduto;
+package br.com.ifpe.oxefood.api.produto;
 
-import br.com.ifpe.oxefood.modelo.categoriaProduto.CategoriaProduto;
+import br.com.ifpe.oxefood.modelo.produto.CategoriaProduto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

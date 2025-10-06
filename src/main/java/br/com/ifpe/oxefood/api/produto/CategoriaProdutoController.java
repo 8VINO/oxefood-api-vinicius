@@ -1,12 +1,12 @@
-package br.com.ifpe.oxefood.api.categoriaProduto;
+package br.com.ifpe.oxefood.api.produto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import br.com.ifpe.oxefood.modelo.categoriaProduto.CategoriaProduto;
-import br.com.ifpe.oxefood.modelo.categoriaProduto.CategoriaProdutoService;
+import br.com.ifpe.oxefood.modelo.produto.CategoriaProduto;
+import br.com.ifpe.oxefood.modelo.produto.CategoriaProdutoService;
 
 public class CategoriaProdutoController {
     @Autowired
