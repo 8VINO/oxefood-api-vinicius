@@ -41,7 +41,7 @@ public class CategoriaProdutoController {
     public ResponseEntity<CategoriaProduto> obterPorId(@PathVariable Long id){
         CategoriaProduto categoriaProduto = categoriaProdutoService.obterPorId(id);
 
-        return ResponseEntity.ok(categoriaProduto).build();
+        return ResponseEntity.status(HttpStatus.OK).body(categoriaProduto);
         
     }
 
