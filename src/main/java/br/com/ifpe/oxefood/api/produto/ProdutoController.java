@@ -21,7 +21,7 @@ import br.com.ifpe.oxefood.modelo.produto.ProdutoService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/produto")
+@RequestMapping("/api/produto")
 public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;

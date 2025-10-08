@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifpe.oxefood.modelo.cliente.Cliente;
 import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
+import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
+import jakarta.validation.Valid;
 
 
 @RestController//define q é uma api rest
@@ -24,10 +26,10 @@ import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
 @CrossOrigin
 
 public class ClienteController {
-     @Autowired
-   private ClienteService clienteService;
+    @Autowired
+    private ClienteService clienteService;
 
-   @PostMapping //caso queira especificar o caminho : @PostMapping<
+   @PostMapping //caso queira especificar o caminho : @PostMapping('/caminho')
    public ResponseEntity<Cliente> save(@RequestBody ClienteRequest request) {
 
        Cliente cliente = clienteService.save(request.build());
@@ -56,4 +58,27 @@ public class ClienteController {
             return ResponseEntity.ok().build();
         
     }
+
+    //ENDERECO
+    @PostMapping("/endereco/{clienteId}")
+   public ResponseEntity<EnderecoCliente> adicionarEnderecoCliente(@PathVariable Long clienteId, @RequestBody @Valid EnderecoClienteRequest request) {
+
+       EnderecoCliente endereco = clienteService.adicionarEnderecoCliente(clienteId, request.build());
+       return new ResponseEntity<EnderecoCliente>(endereco, HttpStatus.CREATED);
+   }
+
+   @PutMapping("/endereco/{enderecoId}")
+   public ResponseEntity<EnderecoCliente> atualizarEnderecoCliente(@PathVariable Long enderecoId, @RequestBody EnderecoClienteRequest request) {
+
+       EnderecoCliente endereco = clienteService.atualizarEnderecoCliente(enderecoId, request.build());
+       return new ResponseEntity<EnderecoCliente>(endereco, HttpStatus.OK);
+   }
+  
+   @DeleteMapping("/endereco/{enderecoId}")
+   public ResponseEntity<Void> removerEnderecoCliente(@PathVariable Long enderecoId) {
+
+       clienteService.removerEnderecoCliente(enderecoId);
+       return ResponseEntity.noContent().build();
+   }
+
 }

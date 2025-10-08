@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 // Define o caminho base da API para esta classe
 // Todas as rotas começam com /api/entregador
-@RequestMapping("api/entregador")
+@RequestMapping("/api/entregador")
 
 // Permite que aplicações de outros domínios acessem esta API (CORS)
 @CrossOrigin

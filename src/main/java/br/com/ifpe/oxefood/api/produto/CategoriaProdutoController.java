@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifpe.oxefood.modelo.produto.CategoriaProduto;
 import br.com.ifpe.oxefood.modelo.produto.CategoriaProdutoService;
 @RestController
-@RequestMapping("/api/categoria")
+@RequestMapping("/api/categoriaproduto")
 @CrossOrigin
 public class CategoriaProdutoController {
     @Autowired
