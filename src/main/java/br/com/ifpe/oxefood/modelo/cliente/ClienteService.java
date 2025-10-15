@@ -2,10 +2,16 @@ package br.com.ifpe.oxefood.modelo.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ifpe.oxefood.modelo.acesso.Perfil;
+import br.com.ifpe.oxefood.modelo.acesso.PerfilRepository;
+import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
+import br.com.ifpe.oxefood.util.exception.ClienteException;
+import br.com.ifpe.oxefood.util.exception.EntidadeNaoEncontradaException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -16,13 +22,32 @@ public class ClienteService {
 
    @Autowired
    private EnderecoClienteRepository enderecoClienteRepository;
+
+      @Autowired
+   private UsuarioService usuarioService;
+
+   @Autowired
+   private PerfilRepository perfilUsuarioRepository;
+
+   
+
     //funcoes de consulta n precisa de transacional
    @Transactional//criar um bloco transacional nesse metodo, ou executa tudo ou executa nada, agrupap varias operações no banco
    public Cliente save(Cliente cliente) {
 
+       if(!cliente.getFoneCelular().startsWith("(81)")){
+            throw new ClienteException(ClienteException.DDD_FIXO);
+       }
+       usuarioService.save(cliente.getUsuario());
+
+      for (Perfil perfil : cliente.getUsuario().getRoles()) {
+           perfil.setHabilitado(Boolean.TRUE);
+           perfilUsuarioRepository.save(perfil);
+      }
+
        cliente.setHabilitado(Boolean.TRUE);
        return repository.save(cliente);
-
+       
        
    }
    
@@ -33,7 +58,14 @@ public class ClienteService {
 
     public Cliente obterPorID(Long id) {
 
-        return repository.findById(id).get(); 
+         Optional<Cliente> consulta = repository.findById(id);
+  
+       if (consulta.isPresent()) {
+           return consulta.get();
+       } else {
+           throw new EntidadeNaoEncontradaException("Cliente", id);
+       }
+
             // Por que ".get()"?
     // O método está definido para retornar um objeto do tipo Cliente.
     // Porém, o findById retorna um Optional<Cliente>, que pode estar vazio
