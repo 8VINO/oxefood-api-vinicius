@@ -39,8 +39,8 @@ public class Cliente extends EntidadeAuditavel {
 
 
    @OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
-   private List<EnderecoCliente> enderecos;
    @Fetch(FetchMode.SUBSELECT)
+   private List<EnderecoCliente> enderecos;
    @Column(nullable = false, length = 100)
    private String nome;
    @Column

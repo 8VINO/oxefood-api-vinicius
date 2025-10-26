@@ -2,9 +2,15 @@ package br.com.ifpe.oxefood.api.entregador;
 
 import java.time.LocalDate;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.ifpe.oxefood.modelo.entregador.Entregador;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,36 +28,53 @@ import lombok.NoArgsConstructor;
 
 public class EntregadorRequest {
 
+    @NotBlank(message = "O nome é de preenchimento obrigatório")
     private String nome;
 
+    @NotBlank(message = "O CPF é de preenchimento obrigatório")
+    @CPF
     private String cpf;
 
+    @NotBlank(message = "O RG é de preenchimento obrigatório")
     private String rg;
 
     // Define o formato de data esperado no JSON: "dd/MM/yyyy"
+    @NotNull(message = "A data de nascimento é de preenchimento obrigatório")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
 
+    @Length(min = 8, max = 20, message = "O campo Fone tem que ter entre {min} e {max} caracteres")
     private String foneCelular;
 
     private String foneFixo;
 
+    @NotNull(message = "A quantidade de entregas realizadas é de preenchimento obrigatório")
+    @PositiveOrZero(message = "A quantidade de entregas realizadas não pode ser negativa")
     private Integer qtdEntregasRealizadas;
-
+    
+    @NotNull(message = "O valor do frete é de preenchimento obrigatório")
+    @PositiveOrZero(message = "O valor do frete não pode ser negativo")
     private Double valorFrete;
 
+    @NotBlank(message = "O endereço da rua é de preenchimento obrigatório")
     private String enderecoRua;
 
+    @NotBlank(message = "O complemento é de preenchimento obrigatório")
     private String enderecoComplemento;
 
+    @NotBlank(message = "O número da residência é de preenchimento obrigatório")
     private String enderecoNumero;
 
+    @NotBlank(message = "As informações do bairro é de preenchimento obrigatório")
     private String enderecoBairro;
 
+    @NotBlank(message = "As informações da cidade é de preenchimento obrigatório")
     private String enderecoCidade;
 
+    @NotBlank(message = "O número do CEP é de preenchimento obrigatório")
     private String enderecoCep;
 
+    @NotBlank(message = "A unidade federativa é de preenchimento obrigatório")
     private String enderecoUf;
 
     private Boolean ativo;

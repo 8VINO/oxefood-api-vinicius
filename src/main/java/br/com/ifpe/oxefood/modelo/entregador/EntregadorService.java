@@ -1,10 +1,14 @@
 package br.com.ifpe.oxefood.modelo.entregador;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import br.com.ifpe.oxefood.util.exception.EntidadeNaoEncontradaException;
+import br.com.ifpe.oxefood.util.exception.EntregadorException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -18,7 +22,10 @@ public class EntregadorService {
    // Se der erro, tudo é desfeito (rollback)
     @Transactional
     public Entregador save(Entregador entregador){
-
+        String foneCelular = entregador.getFoneCelular(); 
+       if(!foneCelular.startsWith("(81)") && !foneCelular.startsWith("81")){
+            throw new EntregadorException(EntregadorException.DDD_FIXO);
+       }
         // Antes de salvar, garante que o entregador está habilitado
         entregador.setHabilitado(Boolean.TRUE);
 
@@ -31,7 +38,14 @@ public class EntregadorService {
     }
 
     public Entregador obterPorId(Long id){
-        return repository.findById(id).get();
+        Optional<Entregador> consulta = repository.findById(id);
+        if (consulta.isPresent()){
+            return consulta.get();
+        }
+        else{
+            throw new EntidadeNaoEncontradaException("Entregador", id);
+        }
+        
     }
 
     @Transactional

@@ -34,8 +34,8 @@ public class ClienteService {
     //funcoes de consulta n precisa de transacional
    @Transactional//criar um bloco transacional nesse metodo, ou executa tudo ou executa nada, agrupap varias operações no banco
    public Cliente save(Cliente cliente) {
-
-       if(!cliente.getFoneCelular().startsWith("(81)")){
+       String foneCelular = cliente.getFoneCelular(); 
+       if(!foneCelular.startsWith("(81)") && !foneCelular.startsWith("81")){
             throw new ClienteException(ClienteException.DDD_FIXO);
        }
        usuarioService.save(cliente.getUsuario());

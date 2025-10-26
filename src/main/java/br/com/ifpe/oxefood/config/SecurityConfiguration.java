@@ -16,7 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import br.com.ifpe.oxefood.modelo.acesso.Usuario;
+
 import br.com.ifpe.oxefood.modelo.seguranca.JwtAuthenticationFilter;
 
 @Configuration
@@ -41,6 +41,7 @@ public class SecurityConfiguration {
 
                 .requestMatchers(HttpMethod.POST, "/api/cliente").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth").permitAll()
+                // .requestMatchers(HttpMethod.POST, "/api/categoriaproduto").permitAll()
 
                 // .requestMatchers(HttpMethod.GET, "/api/produto").permitAll()
                 // .requestMatchers(HttpMethod.GET, "/api/prduto/*").permitAll()
