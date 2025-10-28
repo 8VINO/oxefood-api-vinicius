@@ -16,7 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
+import br.com.ifpe.oxefood.modelo.acesso.Perfil;
 import br.com.ifpe.oxefood.modelo.seguranca.JwtAuthenticationFilter;
 
 @Configuration
@@ -41,13 +41,23 @@ public class SecurityConfiguration {
 
                 .requestMatchers(HttpMethod.POST, "/api/cliente").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth").permitAll()
-                // .requestMatchers(HttpMethod.POST, "/api/categoriaproduto").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/funcionario").permitAll()
+               .requestMatchers(HttpMethod.GET, "/api/produto/").hasAnyAuthority(
+                   Perfil.ROLE_CLIENTE,
+                   Perfil.ROLE_FUNCIONARIO_ADMIN,
+                   Perfil.ROLE_FUNCIONARIO_USER) //Consulta de produto
 
-                // .requestMatchers(HttpMethod.GET, "/api/produto").permitAll()
-                // .requestMatchers(HttpMethod.GET, "/api/prduto/*").permitAll()
-                // .requestMatchers(HttpMethod.DELETE, "/api/prduto/*").permitAll()
+               .requestMatchers(HttpMethod.POST, "/api/produto").hasAnyAuthority(
+                   Perfil.ROLE_FUNCIONARIO_ADMIN,
+                   Perfil.ROLE_FUNCIONARIO_USER) //Cadastro de produto
 
-                // .requestMatchers(HttpMethod.POST, "/api/entregador").permitAll()
+               .requestMatchers(HttpMethod.PUT, "/api/produto/*").hasAnyAuthority(
+                   Perfil.ROLE_FUNCIONARIO_ADMIN,
+                   Perfil.ROLE_FUNCIONARIO_USER) //Alteração de produto
+                  
+               .requestMatchers(HttpMethod.DELETE, "/api/produto/*").hasAnyAuthority(
+                   Perfil.ROLE_FUNCIONARIO_ADMIN) //Exclusão de produto
+
 
                 .requestMatchers(HttpMethod.GET, "/api-docs/*").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
