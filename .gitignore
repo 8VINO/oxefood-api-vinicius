@@ -34,3 +34,6 @@ build/
 
 ## Orig ##
 *.orig
+
+## Env ##
+.env

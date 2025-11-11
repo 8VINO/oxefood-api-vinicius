@@ -56,6 +56,7 @@ public class ClienteRequest {
        return Usuario.builder()
            .username(email)
            .password(password)
+           //Arrays.asList(new Perfil(Perfil.ROLE_CLIENTE)) vai criar um novo objeto de perfil e esse novo objeto vai ser retornado, e logo em seguida será encaixado dentro de uma lista
            .roles(Arrays.asList(new Perfil(Perfil.ROLE_CLIENTE)))
            .build();
    }

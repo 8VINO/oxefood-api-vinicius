@@ -6,11 +6,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import br.com.ifpe.oxefood.modelo.acesso.Perfil;
 import br.com.ifpe.oxefood.modelo.acesso.PerfilRepository;
 import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
+import br.com.ifpe.oxefood.modelo.mensagens.EmailService;
 import br.com.ifpe.oxefood.util.exception.ClienteException;
 import br.com.ifpe.oxefood.util.exception.EntidadeNaoEncontradaException;
 import jakarta.transaction.Transactional;
@@ -30,6 +33,9 @@ public class ClienteService {
     @Autowired
     private PerfilRepository perfilUsuarioRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     // funcoes de consulta n precisa de transacional
     @Transactional // criar um bloco transacional nesse metodo, ou executa tudo ou executa nada,
                    // agrupap varias operações no banco
@@ -38,16 +44,29 @@ public class ClienteService {
         if (!foneCelular.startsWith("(81)") && !foneCelular.startsWith("81")) {
             throw new ClienteException(ClienteException.DDD_FIXO);
         }
-        usuarioService.save(cliente.getUsuario());
 
         for (Perfil perfil : cliente.getUsuario().getRoles()) {
             perfil.setHabilitado(Boolean.TRUE);
             perfilUsuarioRepository.save(perfil);
         }
+        usuarioService.save(cliente.getUsuario());
 
         cliente.setHabilitado(Boolean.TRUE);
         cliente.setCriadoPor(usuarioLogado);
-        return repository.save(cliente);
+
+        Cliente clienteSalvo = repository.save(cliente);
+
+        // garante que o e-mail só será enviado DEPOIS do commit da transação (maneira
+        // obseleta que deve ser substituida posteriormente usando o @EventListener)
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+            @Override
+            public void afterCommit() {
+                emailService.enviarEmailConfirmacaoCadastroCliente(clienteSalvo);
+            }
+        });
+        
+        return clienteSalvo;
 
     }
 

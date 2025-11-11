@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifpe.oxefood.modelo.produto.CategoriaProdutoService;
@@ -31,43 +32,52 @@ public class ProdutoController {
     private CategoriaProdutoService categoriaProdutoService;
 
     @PostMapping
-    public ResponseEntity<Produto> save(@RequestBody @Valid ProdutoRequest request){
+    public ResponseEntity<Produto> save(@RequestBody @Valid ProdutoRequest request) {
 
         Produto produtoNovo = request.build();
         produtoNovo.setCategoria(categoriaProdutoService.obterPorId(request.getIdCategoria()));
-       Produto produto = produtoService.save(produtoNovo);
+        Produto produto = produtoService.save(produtoNovo);
 
         return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> listarTodos(){
-        List<Produto> lista =  produtoService.listarTodos();
-        return new ResponseEntity<List<Produto>>(lista,HttpStatus.OK);
+    public ResponseEntity<List<Produto>> listarTodos() {
+        List<Produto> lista = produtoService.listarTodos();
+        return new ResponseEntity<List<Produto>>(lista, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> obterPorId(@PathVariable Long id){
-         Produto produto = produtoService.obterPorId(id);
+    public ResponseEntity<Produto> obterPorId(@PathVariable Long id) {
+        Produto produto = produtoService.obterPorId(id);
         return new ResponseEntity<Produto>(produto, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> update (@PathVariable Long id, @RequestBody @Valid ProdutoRequest request) {
+    public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody @Valid ProdutoRequest request) {
 
         Produto produto = request.build();
 
         produto.setCategoria(categoriaProdutoService.obterPorId(request.getIdCategoria()));
 
-        produtoService.update(id,produto);
-        
+        produtoService.update(id, produto);
+
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity<Void> delete (@PathVariable Long id){
-            produtoService.delete(id);
-            return ResponseEntity.ok().build();
-        }
-    
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        produtoService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/filtrar")
+    public List<Produto> filtrar(
+            @RequestParam(value = "codigo", required = false) String codigo,
+            @RequestParam(value = "titulo", required = false) String titulo,
+            @RequestParam(value = "idCategoria", required = false) Long idCategoria) {
+
+        return produtoService.filtrar(codigo, titulo, idCategoria);
+    }
+
 }

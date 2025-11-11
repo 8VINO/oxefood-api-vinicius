@@ -22,6 +22,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
+
+//GrantedAuthority é uma interface que vai servir para dizer ao Spring Security que a classe PERFIL é uma permissão valida, ou seja, pode ser usada para indicar o nivel de permissão do usuário
 public class Perfil extends EntidadeNegocio implements GrantedAuthority {
     
    public static final String ROLE_CLIENTE = "CLIENTE";

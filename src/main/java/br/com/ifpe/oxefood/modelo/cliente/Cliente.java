@@ -32,13 +32,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cliente extends EntidadeAuditavel {
-
+   
+   //A coluna que será usada para unir as duas tabelas no banco de dados.
+   // Indica que a coluna no banco de dados que representa a chave estrangeira para Usuario não pode ser nula
    @OneToOne
    @JoinColumn(nullable = false)
    private Usuario usuario;
 
-
+   //orphanRemoval = true: quer dizer se um endereço não tem mais um cliente pai, ele é um órfão e deve ser excluído. Caso o cliente remova um endereço de suas collection, ao salvar o cliente, o endereço sera removido na tabela EndereçoCliente tbm(se n ficaria null na coluna de cliente, e o endereço n teria nenhum cliente para ser associado, ficando orfão)
    @OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
+   //o SUBSELECT vai otimizar o carregamento de collections evitando o problema de  N+1
    @Fetch(FetchMode.SUBSELECT)
    private List<EnderecoCliente> enderecos;
    @Column(nullable = false, length = 100)
