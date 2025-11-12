@@ -47,9 +47,9 @@ public class SecurityConfiguration {
                    Perfil.ROLE_FUNCIONARIO_ADMIN,
                    Perfil.ROLE_FUNCIONARIO_USER) //Consulta de produto
 
-               .requestMatchers(HttpMethod.POST, "/api/produto").hasAnyAuthority(
-                   Perfil.ROLE_FUNCIONARIO_ADMIN,
-                   Perfil.ROLE_FUNCIONARIO_USER) //Cadastro de produto
+              .requestMatchers(HttpMethod.POST, "/api/produto").permitAll()
+            //        Perfil.ROLE_FUNCIONARIO_ADMIN,
+            //        Perfil.ROLE_FUNCIONARIO_USER) //Cadastro de produto
 
                .requestMatchers(HttpMethod.PUT, "/api/produto/*").hasAnyAuthority(
                    Perfil.ROLE_FUNCIONARIO_ADMIN,

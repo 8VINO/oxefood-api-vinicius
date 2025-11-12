@@ -38,5 +38,9 @@ public class Produto extends EntidadeAuditavel{
     private Integer tempoEntregaMaximo;
     @Column
     private Integer tempoEntregaMinimo;
+    //vai ser salvo o caminho e nome da imagem
+    @Column
+    private String imagem;
+
     
 }
